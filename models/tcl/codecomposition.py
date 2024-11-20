@@ -264,7 +264,7 @@ class ImageTextCoDecomposition(ImageDecomposition):
         mask_pos_new = torch.bmm(mask_pos_1.unsqueeze(2), mask_pos_2.unsqueeze(1))
         mask_gt_new = torch.bmm(mask_gt_1.unsqueeze(2).float(), mask_gt_2.unsqueeze(1).float())
         with autocast(enabled=False):
-            ret['new_loss'] = self.bce_loss(mask_pos_new.float(), mask_gt_new.float()) * 2.5
+            ret['new_loss'] = self.bce_loss(mask_pos_new.float(), mask_gt_new.float()) * 2
         
         new_ret, fg_image_emb = self.cal_iseg_loss(
             image,
