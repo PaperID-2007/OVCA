@@ -186,8 +186,7 @@ def do_training(config, model, data_loader, optimizer, lr_scheduler, scaler, val
 
     ust_check = True
     end = time.time()
-    for shared.step, samples in enumerate(cyclize(data_loader), config.train.start_step):
-        step = shared.step
+    for step, samples in enumerate(cyclize(data_loader), config.train.start_step):
         if step >= total_steps:
             break
         if ust_check and config.train.ust_steps and step >= config.train.ust_steps:
@@ -208,7 +207,6 @@ def do_training(config, model, data_loader, optimizer, lr_scheduler, scaler, val
         scaler.unscale_(optimizer)
 
 
-        # # 输出模型中的可学习参数
         # for name, param in model.named_parameters():
         #     if param.requires_grad and param.grad is None:
         #         print(f"Parameter: {name}, Shape: {param.shape}")

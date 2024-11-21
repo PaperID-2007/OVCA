@@ -131,6 +131,7 @@ class ImageTextCoDecomposition(ImageDecomposition):
             for i in range(1, num_objects+1):                                                          
                 mask_object = masks_objects
                 mask_object[mask_object != i] = 0
+                mask_object[mask_object == i] = 1
                 S_object = np.count_nonzero(mask_object == 1)
                 if S_object == 0:
                     continue
@@ -151,6 +152,7 @@ class ImageTextCoDecomposition(ImageDecomposition):
             for i in range(1, num_objects+1):                                                         
                 mask_object = masks_objects
                 mask_object[mask_object != i] = 0
+                mask_object[mask_object == i] = 1
                 S_object = np.count_nonzero(mask_object == 1)
                 if S_object == 0:
                     continue
@@ -163,26 +165,27 @@ class ImageTextCoDecomposition(ImageDecomposition):
                         masks_gt_all[category_index, :, :] = np.logical_xor(intersection, masks_gt_all[j, :, :]).astype(np.int8)
                         masks_gt_all[j, :, :] = np.logical_or(intersection, masks_gt_all[j, :, :]).astype(np.int8)
             np.savez_compressed(path, masks=masks_gt_all)
+    
+    def zipping(self, flag):
+        if flag:
+            base_dir = "../CC3M_unzipping"                        # You need to provide the decompression path of CC3M
+            output_dir = "../CC3M"                                # You need to provide the location of the CC3M training set. Please note that this operation will overwrite the original dataset. It is recommended that you make a backup.
 
-            if shared.step == 70000:
-                base_dir = "../CC3M_unzipping"                        # You need to provide the decompression path of CC3M
-                output_dir = "../CC3M"                                # You need to provide the location of the CC3M training set. Please note that this operation will overwrite the original dataset. It is recommended that you make a backup.
+            os.makedirs(output_dir, exist_ok=True)
 
-                os.makedirs(output_dir, exist_ok=True)
-
-                for folder_name in os.listdir(base_dir):
-                    folder_path = os.path.join(base_dir, folder_name)
+            for folder_name in os.listdir(base_dir):
+                folder_path = os.path.join(base_dir, folder_name)
+                
+                if os.path.isdir(folder_path):
+                    tar_name = os.path.join(output_dir, f"{folder_name}.tar")
                     
-                    if os.path.isdir(folder_path):
-                        tar_name = os.path.join(output_dir, f"{folder_name}.tar")
-                        
-                        with tarfile.open(tar_name, "w") as tar:
-                            for root, dirs, files in os.walk(folder_path):
-                                for file in files:
-                                    file_path = os.path.join(root, file)
-                                    tar.add(file_path, arcname=os.path.relpath(file_path, folder_path))
-                        
-                        print(f"Compression completed: {tar_name}")
+                    with tarfile.open(tar_name, "w") as tar:
+                        for root, dirs, files in os.walk(folder_path):
+                            for file in files:
+                                file_path = os.path.join(root, file)
+                                tar.add(file_path, arcname=os.path.relpath(file_path, folder_path))
+                    
+                    print(f"Compression completed: {tar_name}")
 
     def scene_category(self, img_feature, caption, noun_emb, all_nouns):
         ret = {}
@@ -252,9 +255,15 @@ class ImageTextCoDecomposition(ImageDecomposition):
         with autocast(enabled=False):
             ret['bce_loss'] = self.bce_loss(mask_resize_pos.float(), mask_gt.float()) * 2
 
-        # refine masks
-        if shared.step >= 50000 and shared.step <= 70000:
-            self.refine_masks(mask_resize_pos, npz_path, category)
+        # Masks_Refinement
+        # If you want to use this module, it is recommended that you specify the starting and stopping steps.
+        # if steps >= start_step and steps < end_step:
+        #   self.refine_masks(mask_resize_pos, npz_path, category)
+
+        # After the masks refinement is completed, the data needs to be zipped as training data to fit the model.
+        # if steps == end_step
+        #   self.zipping(True)
+
             
         mask_resize_gt = F.interpolate(mask_gt.unsqueeze(0), size=mask_pos.shape[-2:], mode='nearest').squeeze(0)
         mask_pos_1 = mask_pos[:64, :, :].view(64, -1)
