@@ -1,7 +1,3 @@
-# ------------------------------------------------------------------------------
-# CLIP (https://github.com/openai/CLIP)
-# Copyright (c) 2021 OpenAI. All Rights Reserved.
-# ------------------------------------------------------------------------------
 import hashlib
 import os
 import urllib
