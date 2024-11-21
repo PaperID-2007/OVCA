@@ -1,7 +1,3 @@
-# ------------------------------------------------------------------------------
-# TCL
-# Copyright (c) 2023 Kakao Brain. All Rights Reserved.
-# ------------------------------------------------------------------------------
 from typing import Dict, List, Any
 from datetime import datetime
 from itertools import chain
@@ -16,13 +12,9 @@ import numpy as np
 IMAGENET_DEFAULT_MEAN = (0.485, 0.456, 0.406)
 IMAGENET_DEFAULT_STD = (0.229, 0.224, 0.225)
 
-# set TCL default mean/std
 DEFAULT_MEAN = IMAGENET_DEFAULT_MEAN
 DEFAULT_STD = IMAGENET_DEFAULT_STD
 
-# NOTE Originally CLIP statistics should be used, but the legacy of ImageNet statistics
-# from GroupViT is applied. Fortunately, CLIP is quite robust to slightly different
-# normalization constants (https://github.com/openai/CLIP/issues/20#issuecomment-764985771).
 
 
 def unnorm(x):
