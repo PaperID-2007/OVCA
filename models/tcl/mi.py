@@ -1,7 +1,3 @@
-# ------------------------------------------------------------------------------
-# TCL
-# Copyright (c) 2023 Kakao Brain. All Rights Reserved.
-# ------------------------------------------------------------------------------
 import numpy as np
 import torch
 import torch.nn as nn

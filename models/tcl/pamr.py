@@ -1,6 +1,3 @@
-# Copyright 2020 TU Darmstadt
-# Licnese: Apache 2.0 License.
-# https://github.com/visinf/1-stage-wseg/blob/master/models/mods/pamr.py
 import torch
 import torch.nn.functional as F
 import torch.nn as nn

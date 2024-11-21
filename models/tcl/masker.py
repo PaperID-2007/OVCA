@@ -1,10 +1,3 @@
-# ------------------------------------------------------------------------------
-# CoDe
-# Copyright (C) 2024 by Ji-Jia Wu. All Rights Reserved.
-# ------------------------------------------------------------------------------
-# Modified from TCL (https://github.com/kakaobrain/tcl)
-# Copyright (c) 2023 Kakao Brain. All Rights Reserved.
-# ------------------------------------------------------------------------------
 import copy
 from collections import OrderedDict
 import numpy as np
@@ -159,7 +152,6 @@ class Masker(nn.Module):
         all_text_emb_norm = us.gather_cat(text_emb, grad=True, contiguous_grad=True)
         simmap = torch.einsum("bchw,nc->bnhw", image_emb, all_text_emb_norm)  # shape [128, 128, 56, 56]
         matrix = torch.cat((matrix, matrix), dim=0).unsqueeze(2).unsqueeze(3)
-        # if shared.step > 15000:
         simmap = simmap * matrix
         mask, soft_mask = self.sim2mask(simmap, deterministic=deterministic)
 
