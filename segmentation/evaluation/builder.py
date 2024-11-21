@@ -1,10 +1,3 @@
-# ------------------------------------------------------------------------------
-# CoDe
-# Copyright (C) 2024 by Ji-Jia Wu. All Rights Reserved.
-# ------------------------------------------------------------------------------
-# Modified from TCL (https://github.com/kakaobrain/tcl)
-# Copyright (c) 2023 Kakao Brain. All Rights Reserved.
-# ------------------------------------------------------------------------------
 import mmcv
 import torch
 from mmseg.datasets import build_dataloader, build_dataset
