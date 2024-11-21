@@ -194,7 +194,7 @@ class TCL(nn.Module):
         ])
         # [N, T, C]
         text_embs = rearrange(text_embs, '(n t) c -> n t c', n=num_classes, t=num_templates)
-        text_embs = us.normalize(text_embs, dim=-1) # w为什么增加一个normalize？？？
+        text_embs = us.normalize(text_embs, dim=-1) 
         # [N, C]
         text_embs = text_embs.mean(dim=1)
         text_embs = us.normalize(text_embs, dim=-1)
