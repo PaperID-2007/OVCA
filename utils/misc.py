@@ -1,10 +1,3 @@
-# ------------------------------------------------------------------------------
-# TCL
-# Copyright (c) 2023 Kakao Brain. All Rights Reserved.
-# ------------------------------------------------------------------------------
-# Modified from GroupViT (https://github.com/NVlabs/GroupViT)
-# Copyright (c) 2021-22, NVIDIA Corporation & affiliates. All Rights Reserved.
-# ------------------------------------------------------------------------------
 from collections import OrderedDict
 from typing import Tuple
 
@@ -27,7 +20,7 @@ def get_grad_norm(named_parameters, norm_type=2):
     parameters = list(filter(lambda p: p[1].grad is not None, named_parameters))
     norm_type = float(norm_type)
     total_norm = 0
-    file_path = '/mnt/Disk16T/lxl/zjp/CoDe_multi_rate/fore_ASPP_fp32.txt'
+    file_path = ''
     with open(file_path, 'w') as file:
         for name, p in parameters:
             param_norm = p.grad.data.norm(norm_type)

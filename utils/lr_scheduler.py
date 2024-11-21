@@ -1,7 +1,3 @@
-# ------------------------------------------------------------------------------
-# TCL
-# Copyright (c) 2023 Kakao Brain. All Rights Reserved.
-# ------------------------------------------------------------------------------
 from torch.optim.lr_scheduler import LinearLR, CosineAnnealingLR, SequentialLR
 
 
