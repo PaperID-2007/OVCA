@@ -201,7 +201,7 @@ class ImageTextCoDecomposition(ImageDecomposition):
         img_feature_emb = self.pooling(img_feature_emb)          # [64, 512, 1, 1]
         img_feature_emb = img_feature_emb.squeeze(-2).squeeze(-1)   # [64, 512]
         
-        ret["img_cap_loss"] = self.L1_loss(cap_feature, img_feature_emb) * 0.5
+        ret["img_cap_loss"] = self.L1_loss(cap_feature, img_feature_emb)
 
         img_feature_emb_clone_decode = self.img_fea_dncoder(img_feature_emb_clone)
         ret['img_img_loss'] = self.L1_loss(img_feature, img_feature_emb_clone_decode)
@@ -255,12 +255,9 @@ class ImageTextCoDecomposition(ImageDecomposition):
         with autocast(enabled=False):
             ret['bce_loss'] = self.bce_loss(mask_resize_pos.float(), mask_gt.float()) * 2
 
-        # Masks_Refinement
-        # If you want to use this module, it is recommended that you specify the starting and stopping steps.
         # if steps >= start_step and steps < end_step:
         #   self.refine_masks(mask_resize_pos, npz_path, category)
 
-        # After the masks refinement is completed, the data needs to be zipped as training data to fit the model.
         # if steps == end_step
         #   self.zipping(True)
 
